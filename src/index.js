@@ -6,14 +6,35 @@
 
 import dotenv from "dotenv";
 import dbconnect from "./db/dbconnect.js";
+import express from "express";
+import cors from "cors";
+// import cookieParser from "cookie-parser";
+
+const app = express();
+
 
 dotenv.config();
+app.use(cors({
+    origin: process.env.CORS
+}));
 
 
 
 
 
-dbconnect();
+
+dbconnect()
+  .then(() => {
+    const port = process.env.PORT || 8888;
+
+    app.listen(port, () => {
+      console.log(`Server is running on port: ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error("ERROR: Database connection failed...", error);
+  });
+
 
 
 
